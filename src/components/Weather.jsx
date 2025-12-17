@@ -3,66 +3,56 @@ import "../styles/Weather.css";
 
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
-const clickSound = new Audio("/click.mp3");
-const swipeSound = new Audio("/swipe.mp3");
-
 export default function Weather() {
   const [city, setCity] = useState("");
   const [current, setCurrent] = useState(null);
   const [forecast, setForecast] = useState([]);
-  const [theme, setTheme] = useState("theme-sunny");
   const [error, setError] = useState("");
-
-  let startX = 0;
-
-  function playClick() {
-    clickSound.currentTime = 0;
-    clickSound.play();
-  }
-
-  function handleTouchStart(e) {
-    startX = e.touches[0].clientX;
-  }
-
-  function handleTouchEnd(e) {
-    const diff = e.changedTouches[0].clientX - startX;
-    if (Math.abs(diff) > 100) {
-      swipeSound.play();
-    }
-  }
+  const [theme, setTheme] = useState("theme-sunny");
 
   async function fetchWeather(e) {
     e.preventDefault();
-    playClick();
+
+    if (!city.trim()) {
+      setError("Please enter a city");
+      return;
+    }
 
     try {
+      setError("");
+
+      // Current weather
       const res = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`
       );
+
       if (!res.ok) throw new Error("City not found");
 
       const data = await res.json();
       setCurrent(data);
       applyTheme(data.weather[0].id);
 
+      // Forecast
       const fRes = await fetch(
         `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${API_KEY}`
       );
       const fData = await fRes.json();
-      setForecast(extractForecast(fData.list));
-      setError("");
-    } catch {
-      setError("City not found");
+      setForecast(getDailyForecast(fData.list));
+
+    } catch (err) {
+      setError("City not found ❌");
+      setCurrent(null);
+      setForecast([]);
     }
   }
 
-  function extractForecast(list) {
-    const map = {};
-    list.forEach(i => {
-      const d = i.dt_txt.split(" ")[0];
-      if (!map[d]) map[d] = i;
+  function getDailyForecast(list) {
+    const days = {};
+    list.forEach(item => {
+      const date = item.dt_txt.split(" ")[0];
+      if (!days[date]) days[date] = item;
     });
-    return Object.values(map).slice(0, 5);
+    return Object.values(days).slice(0, 5);
   }
 
   function applyTheme(id) {
@@ -82,40 +72,64 @@ export default function Weather() {
 
   return (
     <div className={`app ${theme}`}>
-      <div className="particles"></div>
+      <main className="weather-card apple-card">
 
-      <div className="splash">
-        <div className="splash-logo">🌦 WeatherPro</div>
-      </div>
-
-      <main
-        className="weather-card"
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-      >
-        <form onSubmit={fetchWeather} className="weather-form">
+        {/* SEARCH */}
+        <form onSubmit={fetchWeather} className="search-bar">
           <input
-            placeholder="Enter city"
+            type="text"
+            placeholder="Search city"
             value={city}
             onChange={e => setCity(e.target.value)}
           />
-          <button>Search</button>
         </form>
 
         {error && <p className="error">{error}</p>}
 
         {current && (
           <>
-            <h1>{current.name}</h1>
-            <div className="weather-icon">{icon(current.weather[0].id)}</div>
-            <h2>{Math.round(current.main.temp)}°C</h2>
+            {/* TOP */}
+            <div className="top-section">
+              <div className="left-info">
+                <div className="big-icon">
+                  {icon(current.weather[0].id)}
+                </div>
+                <p className="condition">
+                  {current.weather[0].description}
+                </p>
+                <div className="minmax">
+                  <span className="up">
+                    ↑ {Math.round(current.main.temp_max)}°
+                  </span>
+                  <span className="down">
+                    ↓ {Math.round(current.main.temp_min)}°
+                  </span>
+                </div>
+              </div>
 
-            <div className="forecast">
+              <div className="right-info">
+                <h1 className="big-temp">
+                  {Math.round(current.main.temp)}°
+                </h1>
+                <p className="location">📍 {current.name}</p>
+              </div>
+            </div>
+
+            {/* FORECAST */}
+            <div className="forecast apple-forecast">
               {forecast.map((d, i) => (
-                <div key={i} className="forecast-card">
-                  <p>{new Date(d.dt_txt).toLocaleDateString("en", { weekday: "short" })}</p>
-                  <p>{icon(d.weather[0].id)}</p>
-                  <p>{Math.round(d.main.temp)}°</p>
+                <div key={i} className="forecast-card glass-pill">
+                  <p className="time">
+                    {new Date(d.dt_txt).toLocaleDateString("en", {
+                      weekday: "short",
+                    })}
+                  </p>
+                  <span className="small-icon">
+                    {icon(d.weather[0].id)}
+                  </span>
+                  <p className="temp-small">
+                    {Math.round(d.main.temp)}°
+                  </p>
                 </div>
               ))}
             </div>
