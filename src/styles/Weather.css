@@ -1,0 +1,215 @@
+/* ================= ROOT SYSTEM ================= */
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.14);
+  --glass-border: rgba(255, 255, 255, 0.28);
+  --blur: 26px;
+
+  --text-main: #ffffff;
+  --text-soft: rgba(255,255,255,0.85);
+  --accent: #ffd369;
+
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
+}
+
+/* ================= APP BACKGROUND ================= */
+.app {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  color: var(--text-main);
+  transition: background 1.2s var(--ease-smooth);
+}
+
+/* ================= THEMES ================= */
+.theme-sunny {
+  background: radial-gradient(circle at top, #ffe29f, #fda085);
+}
+
+.theme-rainy {
+  background: radial-gradient(circle at top, #4ca1af, #2c3e50);
+}
+
+.theme-snowy {
+  background: radial-gradient(circle at top, #d7e1ec, #8faedb);
+}
+
+.theme-stormy {
+  background: radial-gradient(circle at top, #3a3a52, #0f0c29);
+}
+
+/* ================= GLASS CARD ================= */
+.weather-card {
+  width: min(420px, 92%);
+  padding: 32px 26px;
+  border-radius: 28px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    0 30px 60px rgba(0,0,0,.35),
+    inset 0 0 0.5px rgba(255,255,255,.6);
+
+  animation:
+    fadeInUp 0.9s var(--ease-smooth),
+    floatIdle 7s ease-in-out infinite;
+}
+
+/* ================= HEADER ================= */
+.weather-card h1 {
+  text-align: center;
+  font-size: clamp(1.6rem, 4vw, 2rem);
+  font-weight: 600;
+}
+
+.weather-card h2 {
+  text-align: center;
+  font-size: clamp(3.2rem, 7vw, 4rem);
+  color: var(--accent);
+  text-shadow: 0 6px 25px rgba(255,211,105,.45);
+}
+
+/* ================= WEATHER ICON ================= */
+.weather-icon {
+  font-size: clamp(3.5rem, 8vw, 4.8rem);
+  margin: 16px 0;
+  text-align: center;
+  animation:
+    iconFloat 4s ease-in-out infinite,
+    iconPulse 2.8s ease-in-out infinite;
+}
+
+/* ================= DETAILS ================= */
+.details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+  margin: 14px 0;
+}
+
+/* ================= FORECAST ================= */
+.forecast {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+
+.forecast-card {
+  flex: 0 0 72px;
+  background: rgba(255,255,255,0.16);
+  border-radius: 18px;
+  padding: 12px 8px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 15px 30px rgba(0,0,0,.25);
+
+  transition:
+    transform 0.45s var(--ease-spring),
+    box-shadow 0.45s var(--ease-smooth),
+    backdrop-filter 0.45s;
+}
+
+.forecast-card:hover {
+  transform: translateY(-10px) scale(1.1);
+  box-shadow: 0 25px 50px rgba(0,0,0,.45);
+  backdrop-filter: blur(34px);
+}
+
+/* ================= PARTICLES ================= */
+.particles {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* RAIN */
+.theme-rainy .particles::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    -60deg,
+    rgba(255,255,255,0.22) 0,
+    rgba(255,255,255,0.22) 1px,
+    transparent 2px,
+    transparent 12px
+  );
+  animation: rain 0.35s linear infinite;
+}
+
+/* SNOW */
+.theme-snowy .particles::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, white 1.6px, transparent 1.7px),
+    radial-gradient(circle, white 1px, transparent 1.1px);
+  background-size: 60px 60px, 100px 100px;
+  animation: snow 18s linear infinite;
+  opacity: 0.85;
+}
+
+/* ================= SPLASH SCREEN ================= */
+.splash {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #0f2027, #203a43);
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  animation: splashFade 2.4s ease forwards;
+}
+
+.splash-logo {
+  font-size: 3.4rem;
+  animation: splashPulse 2s infinite;
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floatIdle {
+  50% { transform: translateY(-14px); }
+}
+
+@keyframes iconFloat {
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes iconPulse {
+  50% { transform: scale(1.15); }
+}
+
+@keyframes rain {
+  to { background-position: -220px 520px; }
+}
+
+@keyframes snow {
+  from { background-position: 0 -300px, 0 -600px; }
+  to { background-position: 0 900px, 0 1400px; }
+}
+
+@keyframes splashFade {
+  to { opacity: 0; visibility: hidden; }
+}
+
+@keyframes splashPulse {
+  50% { transform: scale(1.18); }
+}
+
+/* ================= ACCESSIBILITY ================= */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
