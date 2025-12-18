@@ -1,197 +1,115 @@
-/* =========================
-   RESET & BASE
-========================= */
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html,
-body {
-  width: 100%;
-  min-height: 100%;
-  overflow-x: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
-    "Poppins", system-ui, sans-serif;
-}
-
-/* =========================
-   APP BACKGROUND
-========================= */
-.app {
-  min-height: 100vh;
-  width: 100%;
-  background: linear-gradient(
-    to bottom,
-    #f6c177 0%,
-    #9eb8bd 45%,
-    #1f5f7a 100%
-  );
+/* ===============================
+   WEATHER PAGE BASE
+================================ */
+.weather-container {
   display: flex;
-  justify-content: center;
-  padding: 16px;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
 }
 
-/* =========================
+/* ===============================
+   SEARCH BAR (PREMIUM)
+================================ */
+.weather-search {
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+}
+
+.weather-search input {
+  width: 100%;
+  padding: 14px 48px 14px 18px;
+  font-size: 1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  outline: none;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.weather-search input::placeholder {
+  color: #999;
+  font-weight: 400;
+}
+
+.weather-search input:focus {
+  border-color: #4f6ef7;
+  box-shadow: 0 8px 20px rgba(79, 110, 247, 0.25);
+  transform: translateY(-1px);
+}
+
+/* Search icon (optional) */
+.weather-search::after {
+  content: "🔍";
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  opacity: 0.6;
+}
+
+/* ===============================
    WEATHER CARD
-========================= */
+================================ */
 .weather-card {
   width: 100%;
   max-width: 420px;
-  background: rgba(255, 255, 255, 0.22);
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  border-radius: 28px;
-  padding: 18px;
-  color: #ffffff;
-  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(145deg, #ffffff, #f3f6ff);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+  animation: fadeUp 0.5s ease;
 }
 
-/* =========================
-   SEARCH BAR (APPLE STYLE)
-========================= */
-.search-bar {
-  width: 100%;
-  height: 52px;
-  border: 2px solid rgba(255, 255, 255, 0.7);
-  border-radius: 999px;
-  padding: 0 18px;
-  display: flex;
-  align-items: center;
-  margin-bottom: 16px;
+/* ===============================
+   TEXT STYLES
+================================ */
+.weather-city {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 4px;
 }
 
-.search-bar input {
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  border: none;
-  outline: none;
-  color: #ffffff;
-  font-size: 1rem;
-}
-
-.search-bar input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-/* =========================
-   ERROR
-========================= */
-.error {
-  text-align: center;
-  margin-top: 10px;
-  color: #ffd6d6;
+.weather-desc {
   font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 14px;
 }
 
-/* =========================
-   TOP SECTION
-========================= */
-.top-section {
+.weather-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-top: 14px;
+  margin: 6px 0;
+  font-size: 0.95rem;
 }
 
-/* LEFT */
-.left-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+/* ===============================
+   ANIMATION
+================================ */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.big-icon {
-  font-size: 3.4rem;
-}
-
-.condition {
-  font-size: 0.9rem;
-  text-transform: capitalize;
-  opacity: 0.9;
-}
-
-.minmax {
-  display: flex;
-  gap: 10px;
-  font-size: 0.85rem;
-}
-
-.up {
-  opacity: 0.9;
-}
-
-.down {
-  opacity: 0.7;
-}
-
-/* RIGHT */
-.right-info {
-  text-align: right;
-}
-
-.big-temp {
-  font-size: clamp(3rem, 10vw, 4rem);
-  font-weight: 600;
-}
-
-.location {
-  font-size: 0.85rem;
-  opacity: 0.85;
-}
-
-/* =========================
-   FORECAST
-========================= */
-.forecast {
-  display: flex;
-  gap: 10px;
-  margin-top: 22px;
-  overflow-x: auto;
-  padding-bottom: 6px;
-}
-
-.forecast::-webkit-scrollbar {
-  display: none;
-}
-
-/* FORECAST CARD */
-.forecast-card {
-  min-width: 72px;
-  background: rgba(255, 255, 255, 0.22);
-  backdrop-filter: blur(16px);
-  border-radius: 20px;
-  padding: 10px 8px;
-  text-align: center;
-}
-
-.time {
-  font-size: 0.75rem;
-  opacity: 0.8;
-}
-
-.small-icon {
-  font-size: 1.6rem;
-  margin: 4px 0;
-}
-
-.temp-small {
-  font-size: 0.9rem;
-}
-
-/* =========================
-   SMALL PHONES FIX
-========================= */
-@media (max-width: 360px) {
+/* ===============================
+   RESPONSIVE
+================================ */
+@media (max-width: 480px) {
   .weather-card {
-    padding: 14px;
+    padding: 16px;
+    border-radius: 16px;
   }
 
-  .big-icon {
-    font-size: 3rem;
+  .weather-search input {
+    font-size: 0.95rem;
   }
 }

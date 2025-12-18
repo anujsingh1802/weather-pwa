@@ -1,0 +1,177 @@
+/* ===============================
+   APP BACKGROUND
+================================ */
+.app-container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #eef3ff, #ffffff);
+}
+
+/* ===============================
+   TAB BAR
+================================ */
+.tab-bar {
+  display: flex;
+  justify-content: space-around;
+  padding: 12px;
+  background: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.tab-bar button {
+  border: none;
+  background: transparent;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.tab-bar button.active {
+  background: #4f6ef7;
+  color: #fff;
+}
+
+.tab-bar button:hover {
+  background: rgba(79, 110, 247, 0.1);
+}
+
+/* ===============================
+   CONTENT
+================================ */
+.content {
+  padding: 16px;
+}
+
+/* ===============================
+   SEARCH BAR (TRAIN / PNR / STATION)
+================================ */
+.content input {
+  width: 100%;
+  max-width: 420px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  font-size: 1rem;
+  outline: none;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+
+.content input:focus {
+  border-color: #4f6ef7;
+  box-shadow: 0 10px 26px rgba(79, 110, 247, 0.25);
+  transform: translateY(-1px);
+}
+
+.content button {
+  margin-top: 10px;
+  padding: 12px 20px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, #4f6ef7, #6f8cff);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.content button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(79, 110, 247, 0.35);
+}
+
+/* ===============================
+   CARD (TRAIN / PNR / STATION)
+================================ */
+.card {
+  background: linear-gradient(145deg, #ffffff, #f5f7ff);
+  border-radius: 20px;
+  padding: 18px;
+  margin: 16px auto;
+  max-width: 420px;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.1);
+  animation: fadeUp 0.45s ease;
+}
+
+.card-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.card-sub {
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.card-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 6px 0;
+  font-size: 0.9rem;
+}
+
+/* ===============================
+   STATUS COLORS
+================================ */
+.status-green {
+  color: #1a9c4b;
+  font-weight: 600;
+}
+
+.status-orange {
+  color: #e67e22;
+  font-weight: 600;
+}
+
+.status-red {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+.tag {
+  display: inline-block;
+  background: #eef2ff;
+  color: #3f51b5;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+/* ===============================
+   ANIMATION
+================================ */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+@media (max-width: 480px) {
+  .card {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .content input {
+    font-size: 0.95rem;
+  }
+}

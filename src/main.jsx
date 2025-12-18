@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
 import { registerSW } from "virtual:pwa-register";
+import TrainSearch from "./components/train/TrainSearch";
 
 // Register service worker
 registerSW({
